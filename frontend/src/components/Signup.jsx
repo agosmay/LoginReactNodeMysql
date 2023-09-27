@@ -33,7 +33,7 @@ const Signup = () => {
 		if(err.name==="" && err.email ==="" && err.password ==="") {
 			axios.post("http://localhost:3000/signup" , values) 
 			.then(res=> {
-				navigate("/")
+				navigate("/login")
 				
 			})
 			.catch(err => console.log(err))

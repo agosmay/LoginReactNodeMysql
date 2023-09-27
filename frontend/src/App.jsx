@@ -2,6 +2,7 @@ import Login from "./components/Login";
 import { BrowserRouter , Routes , Route } from "react-router-dom";
 import Signup from "./components/Signup";
 import Home from "./components/Home";
+import HomeLogged from "./components/HomeLogged";
 
 
 
@@ -12,15 +13,19 @@ const App = () => {
 		<Routes>
 			<Route
 				path="/"
-				element={<Login />}
+				element={<Home />}
 			/>
 			<Route
 				path="/signup"
 				element={<Signup />}
 			/>
 			<Route
+				path="/login"
+				element={<Login />}
+			/>
+			<Route
 				path="/home"
-				element={<Home />}
+				element={<HomeLogged />}
 			/>
 		</Routes>
       
