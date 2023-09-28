@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import LoginValidation from "../LoginValidation";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../auth/context/AuthContext";
 
 
 
@@ -19,6 +21,9 @@ const Login = () => {
 	
 	const [errors , setErrors] = useState({});
 	
+	const { isAuth , setIsAuth } = useContext(AuthContext);
+	
+	
 	const handleChange = (e) => {
 		
 		setValues(prev => ({...prev, [e.target.name]: [e.target.value]}))
@@ -33,11 +38,13 @@ const Login = () => {
 			axios.post("http://localhost:3000/login" , values) 
 			.then(res=> {
 				if(res.data === "Success") {
+					setIsAuth(true)
 					navigate("/home")
 					
 					
-				}else {
 					
+				}else {
+					setIsAuth(false)
 					alert("Credentials do not match");
 					
 				}
