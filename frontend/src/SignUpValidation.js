@@ -17,7 +17,7 @@ const SignUpValidation = (values) => {
 	
 	
 	if(values.email==="") {
-		error.email = "Name should not be empty"
+		error.email = "Email should not be empty"
 		
 		
 	}else if(!email_pattern.test(values.email)){
@@ -32,7 +32,7 @@ const SignUpValidation = (values) => {
 	if(values.password=== "") {
 		error.password = "Password should not be empty"
 	}else if(!password_pattern.test(values.password)){
-		error.password = "Password didnt match"
+		error.password = "Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number."
 		
 	}else {
 		error.password = ""
