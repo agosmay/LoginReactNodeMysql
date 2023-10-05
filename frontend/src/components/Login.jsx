@@ -20,18 +20,66 @@ const Login = () => {
 
   const { isAuth, setIsAuth } = useContext(AuthContext);
 
-  const handleChange = (e) => {
-	  setLoginError("")
-	  
-    setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-  
-  
+   
+const handleChange = (e) => {
+  setLoginError("");
+
+  const fieldName = e.target.name;
+  const fieldValue = e.target.value;
+  let errorMessage = "";
+
+  if (fieldName === "password") {
+    if (fieldValue.trim() === "") {
+      errorMessage = ""; // Campo vacío, no mostrar error
+    } else if (
+      !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/.test(fieldValue)
+    ) {
+      errorMessage = "Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number.";
+    }
+  } else if (fieldName === "email") {
+    if (fieldValue.trim() === "") {
+      errorMessage = ""; // Campo vacío, no mostrar error
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fieldValue)) {
+      errorMessage = "Please include an '@' symbol in the email address and enter text after the '@' symbol followed by a valid domain (e.g., .com)";
+    } else {
+      const [localPart, domainPart] = fieldValue.split('@');
+      if (localPart.length < 1 || localPart.length > 64) {
+        errorMessage = "Email address should have between 1 and 64 characters before the '@' symbol";
+      } else if (!/^[a-z0-9_.-]+$/.test(localPart)) {
+        errorMessage = "Only letters (a-z) and special characters like '.', '-', and '_' are allowed before the '@' symbol";
+      } else if (localPart.startsWith('.') || localPart.endsWith('.') || localPart.includes('..')) {
+        errorMessage = "Invalid placement of periods (.) in the local part of the email address";
+      } else if (localPart.startsWith('--') || localPart.endsWith('--') || localPart.includes('--')) {
+        errorMessage = "Invalid placement of periods (-) in the local part of the email address";
+      }
+
+      // Nueva validación: No permitir mayúsculas antes ni después del símbolo '@'
+      if (/[A-Z]/.test(localPart) || /[A-Z]/.test(domainPart)) {
+        errorMessage = "Only letters (a-z) and special characters like '.', '-', and '_' are allowed before the '@' symbol";
+      }
+    }
+  }
+
+  setErrors((prevErrors) => ({
+    ...prevErrors,
+    [fieldName]: errorMessage,
+  }));
+
+  setValues((prevValues) => ({
+    ...prevValues,
+    [fieldName]: fieldValue,
+  }));
+};
+
+
+
+
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrors(LoginValidation(values));
-		if(errors.email ==="" && errors.password ==="") {
+	const err = LoginValidation(values);
+    setErrors(err);
+		if(err.email ==="" && err.password ==="") {
     axios
       .post("http://localhost:3000/login", values)
       .then((res) => {
@@ -40,11 +88,12 @@ const Login = () => {
           navigate("/home");
         } else {
           setIsAuth(false);
-          setLoginError("Credentials do not match :("); // Establece el mensaje de error
 		  setValues({
             email: "",
             password: ""
           });
+          setLoginError("Credentials do not match :("); // Establece el mensaje de error
+		  
         }
       })
       .catch((err) => console.log(err));
@@ -87,6 +136,7 @@ const Login = () => {
               className="form-control rounded-0"
               onChange={handleChange}
               name="email"
+			  autoComplete="off"
               value={values.email}
             />
             {errors.email && (
@@ -103,6 +153,7 @@ const Login = () => {
                 placeholder="Enter Password"
                 className="form-control rounded-0"
                 onChange={handleChange}
+				autoComplete="new-password"
                 name="password"
                 value={values.password}
               />
@@ -121,6 +172,7 @@ const Login = () => {
           <button
             className="btn btn-success w-100 rounded-0"
             type="submit"
+			
 			
           >
             <strong>Log In</strong>

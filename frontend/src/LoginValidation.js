@@ -8,10 +8,6 @@ const LoginValidation = (values) => {
 		error.email = "Email should not be empty"
 		
 		
-	}else if(!email_pattern.test(values.email)){
-		error.email="Credentials did not match" //Email didnt match , credentials general for more security
-		
-		
 	}else {
 		error.email=""
 		
@@ -19,9 +15,6 @@ const LoginValidation = (values) => {
 	
 	if(values.password=== "") {
 		error.password = "Password should not be empty"
-	}else if(!password_pattern.test(values.password)){
-		error.password = "Credentials did not match" //Password didnt match , credentials general for more security
-		
 	}else {
 		error.password = ""
 	}

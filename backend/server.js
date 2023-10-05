@@ -99,17 +99,10 @@ app.listen(3000, ()=> {
 
 
 /*compare q no haya usuario repetido en la base de datos
-cartelitos q digan como tiene q ser la contrasena
-validaciones front
-required 
+
+
 logout desde el backend
-el boton de login se ejecuta al primer click 
-pero la funcion handlesubmit() no se ejecuta hasta
-el doble click, por que ?
-en signup fue solucionado
-LO MISMO OCURRE CUANDO PONGO MAL LA CONTRASENA ,
-TARDA EN CARGAR Y EN PONER CREDENTIALS DO NOT MATCH
-y credentials do not match no se va una vez q se vacian los inputs incorrectos
+
 agregarle un ratio al terminos y condiciones , poner un true or false en la base de datos ?
 
 
